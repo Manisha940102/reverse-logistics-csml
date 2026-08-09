@@ -75,7 +75,11 @@ The `data pipeline/` directory contains 9 sequential Jupyter Notebooks executing
    $$\text{Cost}_{FP} = \text{Price} \times 0.20 \text{ (Profit Margin)}$$
    $$\text{Sample Weight} = \frac{\text{Cost}_{FN}}{\text{Cost}_{FP}}$$
 6. **`Step 7` & `Step 8` (Model Training & Cost-Sensitive Optimization):** Evaluates baseline Random Forest models and cost-sensitive XGBoost models across dynamic decision thresholds ($0.05$ to $0.95$).
-7. **`Step 9` (Evaluation & Artifact Serialization):** Validates 5-fold cross-validation stability ($\text{AUC} = 80.39\% \pm 0.28\%$), generates ROI figures, and serializes production model artifacts to `ml-service/model_artifacts/`.
+7. **`Step 9.1` – `Step 9.5` (Evaluation, Tri-Tier Risk Triaging & Production Serialization):**
+   - Evaluates Master 6-Model financial loss matrix.
+   - Validates 5-fold cross-validation stability (AUC = 80.39% ± 0.28%).
+   - Computes dynamic risk tier cutoffs (Green Tier $p < 0.20$, Yellow Tier $0.20 \le p < 0.65$, Red Tier $p \ge 0.65$).
+   - **`Step 9.5`:** Serializes production model objects (`winning_model.pkl`, `category_encoder.pkl`, `feature_names.pkl`, `pipeline_config.json`, `category_return_rates.json`) directly into `ml-service/model_artifacts/` for real-time inference deployment. Validates 5-fold cross-validation stability ($\text{AUC} = 80.39\% \pm 0.28\%$), generates ROI figures, and serializes production model artifacts to `ml-service/model_artifacts/`.
 
 ---
 
