@@ -231,4 +231,4 @@ Once all three services are running:
 
 ##  License & Citation
 
-This project was developed for the MSc Data Science Degree Module `7CS119` at the University of Hertfordshire. All dataset rights belong to Olist and Kaggle.
+This project was developed for the MSc Data Science Degree Module `7CS119` at the University of Wolverhampton. All dataset rights belong to Olist and Kaggle.
