@@ -1,0 +1,45 @@
+/* ── Chart Card ── */
+.chart-card {
+  padding: 24px;
+}
+
+.section-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+/* ── Error Banner ── */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--red-border);
+  background: var(--red-bg);
+  color: var(--red);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* ── Table Card ── */
+.table-card {
+  padding: 24px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+.model-name {
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+}

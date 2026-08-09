@@ -1,0 +1,249 @@
+<div class="page-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">Real-Time Order Prediction Workstation</h1>
+    <p class="page-subtitle">Select an order from the database and evaluate its return risk using the cost-sensitive XGBoost model</p>
+  </div>
+
+  <!-- Custom Order Input Form -->
+  <div class="glass-card selection-panel" style="margin-bottom: 24px;">
+    <h3 style="margin-top: 0; margin-bottom: 16px; color: var(--text-primary); font-size: 1.1rem; font-weight: 600;">Custom Order Parameters</h3>
+    <form (ngSubmit)="evaluateOrder()" #customForm="ngForm" class="custom-form-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: end;">
+      
+      <div class="form-group" style="position: relative;">
+        <label class="form-label" for="cat">Category</label>
+        <input type="text" id="cat" class="form-input" 
+               [(ngModel)]="customOrder.productCategory" name="cat" required
+               (input)="onCategoryInput()"
+               (focus)="showDropdown = true"
+               (blur)="hideDropdownDelayed()"
+               autocomplete="off">
+        
+        @if (showDropdown && filteredCategories.length > 0) {
+          <ul class="custom-dropdown">
+            @for (category of filteredCategories; track category) {
+              <li (click)="selectCategory(category)">{{ category }}</li>
+            }
+          </ul>
+        }
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="price">Price (R$)</label>
+        <input type="number" id="price" class="form-input" [(ngModel)]="customOrder.productPrice" name="price" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="freight">Freight (R$)</label>
+        <input type="number" id="freight" class="form-input" [(ngModel)]="customOrder.freightValue" name="freight" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="weight">Weight (g)</label>
+        <input type="number" id="weight" class="form-input" [(ngModel)]="customOrder.productWeightG" name="weight" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="l">L (cm)</label>
+        <input type="number" id="l" class="form-input" [(ngModel)]="customOrder.productLengthCm" name="l" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="w">W (cm)</label>
+        <input type="number" id="w" class="form-input" [(ngModel)]="customOrder.productWidthCm" name="w" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="h">H (cm)</label>
+        <input type="number" id="h" class="form-input" [(ngModel)]="customOrder.productHeightCm" name="h" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label" for="photos">Photos Qty</label>
+        <input type="number" id="photos" class="form-input" [(ngModel)]="customOrder.productPhotosQty" name="photos" required>
+      </div>
+
+      <div class="form-group" style="position: relative;">
+        <label class="form-label" for="city">City</label>
+        <input type="text" id="city" class="form-input" 
+               [(ngModel)]="customOrder.customerCity" name="city"
+               (input)="onCityInput()"
+               (focus)="showCityDropdown = true"
+               (blur)="hideCityDropdownDelayed()"
+               autocomplete="off">
+               
+        @if (showCityDropdown && filteredCities.length > 0) {
+          <ul class="custom-dropdown">
+            @for (city of filteredCities; track city) {
+              <li (click)="selectCity(city)">{{ city }}</li>
+            }
+          </ul>
+        }
+      </div>
+      
+      <div class="form-group" style="position: relative;">
+        <label class="form-label" for="state">State</label>
+        <input type="text" id="state" class="form-input" 
+               [(ngModel)]="customOrder.customerState" name="state"
+               (input)="onStateInput()"
+               (focus)="showStateDropdown = true"
+               (blur)="hideStateDropdownDelayed()"
+               autocomplete="off">
+               
+        @if (showStateDropdown && filteredStates.length > 0) {
+          <ul class="custom-dropdown">
+            @for (state of filteredStates; track state) {
+              <li (click)="selectState(state)">{{ state }}</li>
+            }
+          </ul>
+        }
+      </div>
+
+      <div class="form-group" style="grid-column: 1 / -1; display: flex; gap: 12px; justify-content: flex-end; margin-top: 8px;">
+        <button type="submit" class="btn btn-primary" style="flex: 1;" [disabled]="loading || customForm.invalid">
+          @if (loading) {
+            <span class="spinner" style="width: 16px; height: 16px; border-width: 2px;"></span> Evaluating...
+          } @else {
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            Evaluate Return Risk
+          }
+        </button>
+        <button type="button" class="btn btn-secondary" style="width: auto; padding: 12px 24px;" (click)="clearForm()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+          </svg> Clear
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Error Message -->
+  @if (errorMessage) {
+    <div class="error-banner glass-card">
+      <span>⚠️</span>
+      <span>{{ errorMessage }}</span>
+    </div>
+  }
+
+  <!-- Prediction Result -->
+  @if (prediction) {
+    <div class="result-area" id="prediction-result">
+      <!-- Top Stats Row -->
+      <div class="stats-grid">
+        <!-- Probability Gauge Card -->
+        <div class="glass-card stat-card gauge-card">
+          <div class="probability-gauge">
+            <svg width="160" height="160" viewBox="0 0 160 160">
+              <circle class="gauge-bg" cx="80" cy="80" r="64"/>
+              <circle
+                class="gauge-fill"
+                cx="80" cy="80" r="64"
+                [attr.stroke]="gaugeColor"
+                [attr.stroke-dasharray]="gaugeCircumference"
+                [attr.stroke-dashoffset]="gaugeDashoffset"
+              />
+            </svg>
+            <div class="gauge-value" [style.color]="gaugeColor">
+              {{ formatPercent(prediction.probability) }}
+              <span class="gauge-label">Return Probability</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Risk Tier Card -->
+        <div class="glass-card stat-card">
+          <span class="stat-label">Risk Classification</span>
+          <div class="risk-tier-display">
+            <span class="badge" [ngClass]="riskBadgeClass">
+              <span class="badge-dot"></span>
+              {{ prediction.riskCategory }} Risk
+            </span>
+          </div>
+          <span class="stat-hint">Threshold: {{ prediction.thresholdUsed }}</span>
+          <div class="latency-badge" style="margin-top: 12px;">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            {{ prediction.latencyMs }} ms
+          </div>
+        </div>
+
+        <!-- FN Cost Card -->
+        <div class="glass-card stat-card">
+          <span class="stat-label">False Negative Cost</span>
+          <div class="stat-value" style="color: var(--red);">{{ formatCurrency(prediction.fnCost) }}</div>
+          <span class="stat-hint">Freight + Return Freight + Handling</span>
+        </div>
+
+        <!-- FP Cost Card -->
+        <div class="glass-card stat-card">
+          <span class="stat-label">False Positive Cost</span>
+          <div class="stat-value" style="color: var(--yellow);">{{ formatCurrency(prediction.fpCost) }}</div>
+          <span class="stat-hint">Product Price × Profit Margin</span>
+        </div>
+      </div>
+
+      <!-- Recommendation Banner -->
+      <div class="recommendation-banner" [ngClass]="bannerClass" style="margin-top: 20px;">
+        <span class="banner-icon">{{ bannerIcon }}</span>
+        <div>
+          <strong>{{ prediction.recommendedAction | uppercase }}</strong>
+          @if (prediction.riskCategory === 'Red' && prediction.freightValue > prediction.productPrice) {
+            <br>
+            <span style="font-size: 0.8rem; opacity: 0.85;">
+              Item Freight ({{ formatCurrency(prediction.freightValue) }}) exceeds Price ({{ formatCurrency(prediction.productPrice) }})
+            </span>
+          }
+        </div>
+      </div>
+
+      <!-- Financial Exposure Breakdown -->
+      <div class="glass-card detail-panel" style="margin-top: 20px;">
+        <h3 class="detail-title">Financial Loss Exposure</h3>
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="detail-label">Product Price</span>
+            <span class="detail-value mono">{{ formatCurrency(prediction.productPrice) }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Freight Value</span>
+            <span class="detail-value mono">{{ formatCurrency(prediction.freightValue) }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="detail-label">Net Expected Exposure</span>
+            <span class="detail-value mono" [style.color]="netExposure > 0 ? 'var(--red)' : 'var(--green)'">
+              {{ formatCurrency(netExposure) }}
+            </span>
+          </div>
+          @if (prediction.productCategory) {
+            <div class="detail-item">
+              <span class="detail-label">Product Category</span>
+              <span class="detail-value">{{ prediction.productCategory }}</span>
+            </div>
+          }
+          @if (prediction.customerCity) {
+            <div class="detail-item">
+              <span class="detail-label">Customer Location</span>
+              <span class="detail-value">{{ prediction.customerCity }}, {{ prediction.customerState }}</span>
+            </div>
+          }
+          @if (prediction.shippingDistanceKm != null) {
+            <div class="detail-item">
+              <span class="detail-label">Shipping Distance</span>
+              <span class="detail-value mono">{{ prediction.shippingDistanceKm!.toFixed(1) }} km</span>
+            </div>
+          }
+          @if (prediction.volumetricWeight != null) {
+            <div class="detail-item">
+              <span class="detail-label">Volumetric Weight</span>
+              <span class="detail-value mono">{{ prediction.volumetricWeight!.toFixed(2) }} kg</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Empty state (no prediction yet) -->
+  @if (!prediction && !loading && !errorMessage) {
+    <div class="glass-card empty-state" style="margin-top: 24px;">
+      <span class="empty-icon">🔍</span>
+      <span class="empty-title">No Prediction Yet</span>
+      <span class="empty-text">Fill in the order parameters above and click "Evaluate Return Risk" to run the cost-sensitive ML model.</span>
+    </div>
+  }
+</div>

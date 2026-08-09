@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+venv/
+.venv/
+env/
+ENV/
+
+# Build outputs & executables
+dist/
+build/
+bin/
+obj/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Visual Studio & IDE files
+.vs/
+.idea/
+.vscode/
+*.suo
+*.user
+*.sln.docstates
+
+# Python cache & Jupyter checkpoints
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+
+# Word Backups / Scratch files (optional)
+~$*.docx

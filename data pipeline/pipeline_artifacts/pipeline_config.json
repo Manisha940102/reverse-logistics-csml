@@ -1,0 +1,9 @@
+{
+  "best_threshold_rf": 0.32,
+  "best_threshold_xgb": 0.63,
+  "selected_split": "80/20 5-Fold OOF CV (Method 2)",
+  "loss_per_order_rf": 3.2743359219794117,
+  "loss_per_order_xgb": 3.086881704894347,
+  "feature_count": 25,
+  "test_samples": 22148
+}

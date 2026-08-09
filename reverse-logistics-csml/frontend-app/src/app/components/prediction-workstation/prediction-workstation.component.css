@@ -1,0 +1,171 @@
+/* ── Selection Panel ── */
+.selection-panel {
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.selection-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.selection-input {
+  flex: 1;
+}
+
+.evaluate-btn {
+  min-width: 200px;
+  height: 42px;
+  white-space: nowrap;
+}
+
+.hint-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ── Error Banner ── */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--red-border);
+  background: var(--red-bg);
+  color: var(--red);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+/* ── Result Area ── */
+.result-area {
+  animation: fadeInUp 0.5s ease-out;
+  margin-top: 20px;
+}
+
+/* ── Gauge Card ── */
+.gauge-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+/* ── Risk Tier Display ── */
+.risk-tier-display {
+  margin-top: 10px;
+}
+
+.risk-tier-display .badge {
+  font-size: 0.9rem;
+  padding: 6px 18px;
+}
+
+.badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+}
+
+/* ── Detail Panel ── */
+.detail-panel {
+  padding: 24px;
+}
+
+.detail-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 18px;
+  letter-spacing: -0.01em;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.detail-label {
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+
+.detail-value {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.detail-value.mono {
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  .selection-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .evaluate-btn {
+    min-width: unset;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Custom Dropdown ── */
+.custom-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: var(--bg-elevated);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0 0;
+}
+
+.custom-dropdown li {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--text-primary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.custom-dropdown li:last-child {
+  border-bottom: none;
+}
+
+.custom-dropdown li:hover {
+  background-color: var(--accent);
+  color: white;
+}

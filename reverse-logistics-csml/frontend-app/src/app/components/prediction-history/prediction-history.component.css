@@ -1,0 +1,48 @@
+/* ── Table Card ── */
+.table-card {
+  padding: 24px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+/* ── Error Banner ── */
+.error-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--red-border);
+  background: var(--red-bg);
+  color: var(--red);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+
+.order-id {
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.action-text {
+  font-size: 0.78rem;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.timestamp {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}

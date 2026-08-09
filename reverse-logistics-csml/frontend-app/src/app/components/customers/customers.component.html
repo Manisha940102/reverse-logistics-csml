@@ -1,0 +1,97 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">Customers Management</h1>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-banner glass-card">
+      <span>⚠️</span> {{ errorMessage }}
+    </div>
+  }
+
+  <div class="glass-card" style="padding: 24px;">
+    
+    <!-- Table Toolbar: Right-aligned search -->
+    <div class="table-toolbar">
+      <div class="search-container">
+        <input type="text" class="form-input" placeholder="Search Customer..." [(ngModel)]="searchQuery" (ngModelChange)="onSearch()">
+        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+    </div>
+    
+    @if (loading) {
+      <div style="padding: 48px; text-align: center;">
+        <div class="spinner spinner-lg"></div>
+      </div>
+    } @else {
+      <div style="overflow-x: auto;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th class="sort-header">Customer ID ↓</th>
+              <th class="sort-header">Customer Unique ID</th>
+              <th class="sort-header">Zip Code Prefix</th>
+              <th class="sort-header">City</th>
+              <th class="sort-header">State</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of items; track item.customerId) {
+              <tr>
+                <td>{{ item.customerId }}</td>
+                <td>{{ item.customerUniqueId }}</td>
+                <td>{{ item.customerZipCodePrefix }}</td>
+                <td>{{ item.customerCity }}</td>
+                <td>{{ item.customerState }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- Table Pagination (Matches the screenshot style) -->
+      <div class="table-pagination">
+        <div>
+          Row per page: 
+          <select [ngModel]="pageSize" (change)="onPageSizeChange($event)">
+            @for (size of pageSizeOptions; track size) {
+              <option [value]="size">{{ size }}</option>
+            }
+          </select>
+        </div>
+        
+        <div>
+          {{ startIndex }}-{{ endIndex }} of {{ totalRecords }}
+        </div>
+        
+        <div class="pagination-actions">
+          <button class="page-btn" [disabled]="page === 1" (click)="firstPage()" title="First Page">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="19 20 9 12 19 4 19 20"></polygon>
+              <line x1="5" y1="19" x2="5" y2="5"></line>
+            </svg>
+          </button>
+          <button class="page-btn" [disabled]="page === 1" (click)="prevPage()" title="Previous Page">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button class="page-btn" [disabled]="page >= totalPages" (click)="nextPage()" title="Next Page">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+          <button class="page-btn" [disabled]="page >= totalPages" (click)="lastPage()" title="Last Page">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="5 4 15 12 5 20 5 4"></polygon>
+              <line x1="19" y1="5" x2="19" y2="19"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    }
+  </div>
+</div>

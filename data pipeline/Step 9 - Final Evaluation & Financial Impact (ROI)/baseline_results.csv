@@ -1,0 +1,4 @@
+Variant,Sample Weights?,Threshold Strategy,Threshold (t),Accuracy,Precision,Recall,F1-Score,AUC-ROC,Total Loss (R$),Loss Per Order
+Variant 1: Cost-Unaware RF,No,Default (t=0.50),0.5,89.97%,82.80%,45.11%,58.41%,80.62%,"R$ 106,756.55",R$ 4.8201
+Variant 2: Cost-Aware RF,Yes,Default (t=0.50),0.5,89.94%,82.41%,45.26%,58.43%,80.32%,"R$ 105,835.21",R$ 4.7785
+Variant 3: Cost-Aware RF + OOF Threshold,Yes,OOF Tuned (t=0.29),0.29,89.46%,74.13%,49.88%,59.64%,80.32%,"R$ 103,490.11",R$ 4.6727

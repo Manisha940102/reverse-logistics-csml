@@ -1,0 +1,5 @@
+Method,Test Rows,Threshold,Accuracy,Recall,Total_Loss,Loss_Per_Order
+Method 1: 80/20 Split (Test Tuned),22148,0.67,89.60%,49.74%,"R$ 102,302.13",R$ 4.6190
+Method 2: 80/20 Split (5-Fold OOF CV),22148,0.65,89.44%,50.23%,"R$ 102,753.95",R$ 4.6394
+Method 3: 70/15/15 Split,16611,0.68,89.54%,49.31%,"R$ 79,219.70",R$ 4.7691
+Method 4: 60/20/20 Split,22148,0.68,89.58%,48.32%,"R$ 105,556.43",R$ 4.7660

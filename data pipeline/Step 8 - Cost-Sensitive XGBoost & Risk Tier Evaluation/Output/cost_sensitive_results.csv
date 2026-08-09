@@ -1,0 +1,4 @@
+Variant,Sample Weights?,Threshold Strategy,Threshold (t),Accuracy,Precision,Recall,F1-Score,AUC-ROC,Total Loss (R$),Loss Per Order
+Variant 1: Cost-Unaware XGBoost,No,Default (t=0.50),0.5,90.06%,83.63%,45.20%,58.68%,80.47%,"R$ 106,343.49",R$ 4.8015
+Variant 2: Cost-Aware XGBoost,Yes,Default (t=0.50),0.5,85.33%,52.79%,56.97%,54.80%,79.83%,"R$ 112,402.29",R$ 5.0751
+Variant 3: Cost-Aware XGBoost + OOF Threshold,Yes,OOF Tuned (t=0.65),0.65,89.44%,73.79%,50.23%,59.77%,79.83%,"R$ 102,753.95",R$ 4.6394
