@@ -1,7 +1,7 @@
 {
   "selected_winning_model": "Variant 3: Cost-Aware XGBoost + OOF Threshold",
   "optimal_decision_threshold": 0.61,
-  "t_low_green_threshold": 0.3,
+  "t_low_green_threshold": 0.4,
   "t_high_red_threshold": 0.61,
   "loss_per_order_winner": 4.67773370055987,
   "total_financial_loss_winner": 103602.446,
