@@ -165,15 +165,13 @@ def predict():
         profit_margin = float(config_input.get('ProfitMarginPercentage', 0.20))
         handling_cost = float(config_input.get('HandlingCostPerOrder', 5.00))
         t_high = float(config_input.get('DynamicThreshold', default_config.get('optimal_decision_threshold', 0.65)))
-        t_low = float(config_input.get('GreenThreshold', default_config.get('t_low_green_threshold', 0.29)))
+        t_low = float(config_input.get('GreenThreshold', default_config.get('t_low_green_threshold', 0.30)))
 
-        # Determine Tri-Tier Risk Classification (with Freight > Price Red & Low-Freight Green Overrides)
-        is_low_risk_local = (shipping_cost_ratio <= 0.05 and photos_qty >= 3 and price >= 100.0)
-        
+        # Determine Tri-Tier Risk Classification
         if is_shipping_more_than_item == 1.0 or probability >= t_high:
             risk_category = "Red"
             recommended_action = "High-Priority Return Mitigation"
-        elif probability < t_low or (is_low_risk_local and probability < 0.30):
+        elif probability < 0.30 or shipping_cost_ratio <= 0.05:
             risk_category = "Green"
             recommended_action = "Standard Automated Dispatch"
         else:
