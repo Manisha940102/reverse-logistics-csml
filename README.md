@@ -19,7 +19,7 @@ This project resolves this financial asymmetry by:
 2. Training a **Cost-Sensitive XGBoost Model** (`scale_pos_weight = 5.08`) with Out-Of-Fold (OOF) decision threshold optimization ($t^* = 0.61$).
 3. Stratifying orders into three **Operational Risk Tiers**:
    - 🟢 **Green Risk Tier ($p < 0.21$):** Standard Automated Dispatch (Low Risk).
-   - 🟡 **Yellow Risk Tier ($0.20 \le p < 0.61$):** Targeted Pre-Dispatch Intervention (Moderate Risk).
+   - 🟡 **Yellow Risk Tier ($0.21 \le p < 0.61$):** Targeted Pre-Dispatch Intervention (Moderate Risk).
    - 🔴 **Red Risk Tier ($p \ge 0.61$):** High-Priority Return Mitigation / Returnless Refund Strategy (High Risk).
 4. Deploying a full **3-Tier Enterprise Web Application** (Angular 17 UI, .NET 8 Web API, Python Flask ML Service, SQL Server DB).
 
