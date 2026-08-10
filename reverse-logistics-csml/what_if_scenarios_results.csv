@@ -1,0 +1,6 @@
+Scenario,Category,Price (R$),Freight (R$),Weight (g),Distance (km),Reviewer Deviance,Is Extreme Reviewer,Return Prob (%),Risk Tier,FN Cost (R$),FP Cost (R$),Recommended Action
+Scenario 1: Low Risk Standard Order (Green Tier),health_beauty,200.0,8.0,300.0,15.0,0.0,0.0,40.47,Green,22.6,40.0,Standard Automated Dispatch
+Scenario 2: High Freight & Long Distance (Red Risk Tier),fashion_bags_accessories,30.0,45.0,4500.0,2689.4,0.0,0.0,91.86,Red,104.0,6.0,High-Priority Return Mitigation
+Scenario 3: Extreme Reviewer Behavior Sensitivity Test,health_beauty,200.0,8.0,300.0,15.0,2.5,1.0,77.84,Red,22.6,40.0,High-Priority Return Mitigation
+Scenario 4: Heavy Bulky Housewares Item (Yellow Risk Tier),housewares,150.0,50.0,8000.0,800.0,0.5,0.0,86.53,Red,115.0,30.0,High-Priority Return Mitigation
+Scenario 5: Pre-Purchase Neutral Imputation (Default 0.0),computers_accessories,450.0,25.0,1200.0,350.0,0.0,0.0,66.97,Red,60.0,90.0,High-Priority Return Mitigation
