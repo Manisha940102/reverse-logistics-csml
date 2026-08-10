@@ -16,11 +16,11 @@ Traditional machine learning classifiers focus on maximizing prediction accuracy
 
 This project resolves this financial asymmetry by:
 1. Building a **Dynamic Cost Matrix** incorporating Haversine shipping distance and volumetric package weight.
-2. Training a **Cost-Sensitive XGBoost Model** (`scale_pos_weight = 5.40`) with Out-Of-Fold (OOF) decision threshold optimization ($t^* = 0.65$).
+2. Training a **Cost-Sensitive XGBoost Model** (`scale_pos_weight = 5.40`) with Out-Of-Fold (OOF) decision threshold optimization ($t^* = 0.61$).
 3. Stratifying orders into three **Operational Risk Tiers**:
    - 🟢 **Green Risk Tier ($p < 0.20$):** Standard Automated Dispatch (Low Risk).
-   - 🟡 **Yellow Risk Tier ($0.20 \le p < 0.65$):** Targeted Pre-Dispatch Intervention (Moderate Risk).
-   - 🔴 **Red Risk Tier ($p \ge 0.65$):** High-Priority Return Mitigation / Returnless Refund Strategy (High Risk).
+   - 🟡 **Yellow Risk Tier ($0.20 \le p < 0.61$):** Targeted Pre-Dispatch Intervention (Moderate Risk).
+   - 🔴 **Red Risk Tier ($p \ge 0.61$):** High-Priority Return Mitigation / Returnless Refund Strategy (High Risk).
 4. Deploying a full **3-Tier Enterprise Web Application** (Angular 17 UI, .NET 8 Web API, Python Flask ML Service, SQL Server DB).
 
 ---
@@ -78,7 +78,7 @@ The `data pipeline/` directory contains 9 sequential Jupyter Notebooks executing
 7. **`Step 9.1` – `Step 9.5` (Evaluation, Tri-Tier Risk Triaging & Production Serialization):**
    - Evaluates Master 6-Model financial loss matrix.
    - Validates 5-fold cross-validation stability (AUC = 80.39% ± 0.28%).
-   - Computes dynamic risk tier cutoffs (Green Tier $p < 0.20$, Yellow Tier $0.20 \le p < 0.65$, Red Tier $p \ge 0.65$).
+   - Computes dynamic risk tier cutoffs (Green Tier $p < 0.20$, Yellow Tier $0.20 \le p < 0.61$, Red Tier $p \ge 0.61$).
    - **`Step 9.5`:** Serializes production model objects (`winning_model.pkl`, `category_encoder.pkl`, `feature_names.pkl`, `pipeline_config.json`, `category_return_rates.json`) directly into `ml-service/model_artifacts/` for real-time inference deployment. Validates 5-fold cross-validation stability ($\text{AUC} = 80.39\% \pm 0.28\%$), generates ROI figures, and serializes production model artifacts to `ml-service/model_artifacts/`.
 
 ---
@@ -227,9 +227,9 @@ Once all three services are running:
 | :--- | :---: | :---: | :---: | :---: | :---: |
 | **Model 1: Cost-Unaware RF** | $0.50$ | $89.97\%$ | $45.11\%$ | R\$ 106,756.55 | Baseline |
 | **Model 4: Cost-Unaware XGBoost** | $0.50$ | $90.06\%$ | $45.20\%$ | R\$ 106,343.49 | R\$ 413.06 |
-| **Model 6: Winning Cost-Aware XGBoost** | **$0.65$** | **$89.44\%$** | **$50.23\%$** | **R\$ 102,753.95** | **R\$ 4,002.60 (Test Set)** |
+| **Model 6: Winning Cost-Aware XGBoost** | **$0.61$** | **$89.44\%$** | **$50.23\%$** | **R\$ 103,602.45** | **R\$ 4,002.60 (Test Set)** |
 
-* **Projected Net Dataset Savings:** **R\$ 76,957.58** (**42.82% cost reduction** vs Static Ship-All Policy).
+* **Projected Net Dataset Savings:** **R\$ 41,567.95** (**42.82% cost reduction** vs Static Ship-All Policy).
 
 ---
 
