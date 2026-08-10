@@ -1,7 +1,7 @@
 # A Cost-Sensitive Machine Learning Framework for Optimizing Reverse Logistics Decisions in E-Commerce Return Management
 
 **Author:** Manisha Oshadhi Jayasinghe (Student ID: 2585183)  
-**Module:** 7CS119 – MSc Project Data Science  
+**Module:** 7CS041 – MSc Project Data Science  
 **Supervisors:** Dr. Kasun Karunanayaka & Dr. W.M.K.S Ilmini  
 
 ---
@@ -16,9 +16,9 @@ Traditional machine learning classifiers focus on maximizing prediction accuracy
 
 This project resolves this financial asymmetry by:
 1. Building a **Dynamic Cost Matrix** incorporating Haversine shipping distance and volumetric package weight.
-2. Training a **Cost-Sensitive XGBoost Model** (`scale_pos_weight = 5.40`) with Out-Of-Fold (OOF) decision threshold optimization ($t^* = 0.61$).
+2. Training a **Cost-Sensitive XGBoost Model** (`scale_pos_weight = 5.08`) with Out-Of-Fold (OOF) decision threshold optimization ($t^* = 0.61$).
 3. Stratifying orders into three **Operational Risk Tiers**:
-   - 🟢 **Green Risk Tier ($p < 0.20$):** Standard Automated Dispatch (Low Risk).
+   - 🟢 **Green Risk Tier ($p < 0.21$):** Standard Automated Dispatch (Low Risk).
    - 🟡 **Yellow Risk Tier ($0.20 \le p < 0.61$):** Targeted Pre-Dispatch Intervention (Moderate Risk).
    - 🔴 **Red Risk Tier ($p \ge 0.61$):** High-Priority Return Mitigation / Returnless Refund Strategy (High Risk).
 4. Deploying a full **3-Tier Enterprise Web Application** (Angular 17 UI, .NET 8 Web API, Python Flask ML Service, SQL Server DB).
@@ -78,7 +78,7 @@ The `data pipeline/` directory contains 9 sequential Jupyter Notebooks executing
 7. **`Step 9.1` – `Step 9.5` (Evaluation, Tri-Tier Risk Triaging & Production Serialization):**
    - Evaluates Master 6-Model financial loss matrix.
    - Validates 5-fold cross-validation stability (AUC = 80.39% ± 0.28%).
-   - Computes dynamic risk tier cutoffs (Green Tier $p < 0.20$, Yellow Tier $0.20 \le p < 0.61$, Red Tier $p \ge 0.61$).
+   - Computes dynamic risk tier cutoffs (Green Tier $p < 0.21$, Yellow Tier $0.21 \le p < 0.61$, Red Tier $p \ge 0.61$).
    - **`Step 9.5`:** Serializes production model objects (`winning_model.pkl`, `category_encoder.pkl`, `feature_names.pkl`, `pipeline_config.json`, `category_return_rates.json`) directly into `ml-service/model_artifacts/` for real-time inference deployment. Validates 5-fold cross-validation stability ($\text{AUC} = 80.39\% \pm 0.28\%$), generates ROI figures, and serializes production model artifacts to `ml-service/model_artifacts/`.
 
 ---
@@ -235,4 +235,4 @@ Once all three services are running:
 
 ##  License & Citation
 
-This project was developed for the MSc Data Science Degree Module `7CS119` at the University of Wolverhampton. All dataset rights belong to Olist and Kaggle.
+This project was developed for the MSc Data Science Degree Module `7CS041` at the University of Wolverhampton. All dataset rights belong to Olist and Kaggle.
