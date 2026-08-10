@@ -115,7 +115,7 @@ def predict():
         default_cat_rate = category_return_rates.get(cat_str, 0.1507)
         category_ret_rate = float(features_input.get('category_return_rate', default_cat_rate))
         product_ret_rate = float(features_input.get('product_return_rate', default_cat_rate))
-        customer_ret_rate = float(features_input.get('customer_return_rate', default_cat_rate))
+        customer_ret_rate = float(features_input.get('customer_return_rate', 0.0))
         product_sales = float(features_input.get('product_total_sales', 50.0))
 
         cat_str = str(features_input.get('product_category_name_english', features_input.get('productCategory', 'unknown'))).strip().lower()
@@ -165,16 +165,16 @@ def predict():
         t_high = float(config_input.get('DynamicThreshold', default_config.get('optimal_decision_threshold', 0.65)))
         t_low = float(default_config.get('t_low_green_threshold', 0.20))
 
-        # Determine Tri-Tier Risk Classification
-        if probability < t_low:
-            risk_category = "Green"
-            recommended_action = "Standard Automated Dispatch"
-        elif probability < t_high:
-            risk_category = "Yellow"
-            recommended_action = "Targeted Pre-Dispatch Intervention"
-        else:
+        # Determine Tri-Tier Risk Classification (with Freight > Price Red Tier Override)
+        if is_shipping_more_than_item == 1.0 or probability >= t_high:
             risk_category = "Red"
             recommended_action = "High-Priority Return Mitigation"
+        elif probability < t_low:
+            risk_category = "Green"
+            recommended_action = "Standard Automated Dispatch"
+        else:
+            risk_category = "Yellow"
+            recommended_action = "Targeted Pre-Dispatch Intervention"
 
         # Financial Loss Costs Calculation
         return_freight = float(features_input.get('return_freight', freight_value))
