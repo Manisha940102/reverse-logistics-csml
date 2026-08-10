@@ -1,12 +1,12 @@
 {
   "selected_winning_model": "Variant 3: Cost-Aware XGBoost + OOF Threshold",
-  "optimal_decision_threshold": 0.65,
+  "optimal_decision_threshold": 0.61,
   "t_low_green_threshold": 0.2,
   "t_high_red_threshold": 0.65,
-  "loss_per_order_winner": 4.639423424236951,
-  "total_financial_loss_winner": 102753.95,
-  "static_ship_all_loss": 179711.534,
-  "net_financial_savings": 76957.58400000002,
-  "savings_per_order": 3.474696767202457,
+  "loss_per_order_winner": 4.67773370055987,
+  "total_financial_loss_winner": 103602.446,
+  "static_ship_all_loss": 145170.392,
+  "net_financial_savings": 41567.945999999996,
+  "savings_per_order": 1.8768261694058153,
   "all_diagnostic_experiments_passed": true
 }
