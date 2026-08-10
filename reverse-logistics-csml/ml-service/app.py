@@ -99,7 +99,9 @@ def predict():
         freight_to_price_ratio = float(features_input.get('freight_to_price_ratio', shipping_cost_ratio))
         is_shipping_more_than_item = float(features_input.get('is_shipping_more_than_item', 1.0 if freight_value > price else 0.0))
 
-        distance_km = float(features_input.get('haversine_distance_km', features_input.get('shipping_distance_km', 480.0)))
+        state_str = str(features_input.get('customer_state', '')).strip().upper()
+        default_dist = 15.0 if state_str in ['SP', 'RJ', 'MG', ''] else 480.0
+        distance_km = float(features_input.get('haversine_distance_km', features_input.get('shipping_distance_km', default_dist)))
         deviance_score = float(features_input.get('reviewer_deviance_score', features_input.get('reviewer_deviance', 0.0)))
         is_extreme = float(features_input.get('is_extreme_reviewer', 1.0 if abs(deviance_score) > 2.0 else 0.0))
 
@@ -108,7 +110,7 @@ def predict():
         delay_days = float(features_input.get('delivery_delay_days', default_delay))
 
         customer_orders = float(features_input.get('customer_order_count', 0.0))
-        customer_avg_rev = float(features_input.get('customer_avg_review', 3.0))
+        customer_avg_rev = float(features_input.get('customer_avg_review', 5.0))
         customer_spend = float(features_input.get('customer_total_spend', price))
 
         # Dynamic category return rate lookup
@@ -163,13 +165,15 @@ def predict():
         profit_margin = float(config_input.get('ProfitMarginPercentage', 0.20))
         handling_cost = float(config_input.get('HandlingCostPerOrder', 5.00))
         t_high = float(config_input.get('DynamicThreshold', default_config.get('optimal_decision_threshold', 0.65)))
-        t_low = float(default_config.get('t_low_green_threshold', 0.20))
+        t_low = float(config_input.get('GreenThreshold', default_config.get('t_low_green_threshold', 0.29)))
 
-        # Determine Tri-Tier Risk Classification (with Freight > Price Red Tier Override)
+        # Determine Tri-Tier Risk Classification (with Freight > Price Red & Low-Freight Green Overrides)
+        is_low_risk_local = (shipping_cost_ratio <= 0.05 and photos_qty >= 3 and price >= 100.0)
+        
         if is_shipping_more_than_item == 1.0 or probability >= t_high:
             risk_category = "Red"
             recommended_action = "High-Priority Return Mitigation"
-        elif probability < t_low:
+        elif probability < t_low or (is_low_risk_local and probability < 0.30):
             risk_category = "Green"
             recommended_action = "Standard Automated Dispatch"
         else:

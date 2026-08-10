@@ -280,12 +280,12 @@ public class OrderService
             }
             if (distanceKm <= 0)
             {
-                distanceKm = 480.0; // dataset median distance
+                distanceKm = (customerStateClean == "SP" || string.IsNullOrWhiteSpace(customerStateClean)) ? 15.0 : 480.0;
             }
         }
         else if (distanceKm <= 0)
         {
-            distanceKm = 480.0;
+            distanceKm = 15.0;
         }
 
         // 3. Calculate or Lookup Reviewer Deviance Score if not manually supplied
