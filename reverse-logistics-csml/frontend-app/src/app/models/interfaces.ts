@@ -59,7 +59,7 @@ export interface ModelComparison {
   precisionScore: number;
   recallScore: number;
   f1Score: number;
-  aucroc: number;
+  aucRoc: number;
   falseNegativesCount: number;
   falsePositivesCount: number;
   totalFinancialLoss: number;

@@ -65,7 +65,9 @@ export class ModelBenchmarkComponent implements OnInit {
     return 'R$ ' + value.toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   }
 
-  formatPercent(value: number): string {
-    return value.toFixed(2) + '%';
+  formatPercent(value: number | undefined | null): string {
+    if (value === undefined || value === null || isNaN(value)) return 'N/A';
+    const pct = value <= 1 ? value * 100 : value;
+    return pct.toFixed(2) + '%';
   }
 }
