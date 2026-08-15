@@ -38,7 +38,7 @@ public class ModelComparison
     [Column("TotalFinancialLoss")]
     public decimal TotalFinancialLoss { get; set; }
 
-    [Column("OperationalSavings")]
+    [Column("LossPerOrder")]
     public decimal? OperationalSavings { get; set; }
 
     [Column("IsOptimal")]
